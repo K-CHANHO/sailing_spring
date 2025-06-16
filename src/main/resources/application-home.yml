@@ -1,5 +1,8 @@
-# JPA
 spring:
+  config:
+    activate:
+      on-profile: home
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/sailing_spring
