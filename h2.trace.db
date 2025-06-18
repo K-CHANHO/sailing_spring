@@ -361,3 +361,18 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: D:/개발/sailin
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 152 more
+2025-06-18 17:49:52.000554+09:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOARD" not found (this database is empty); SQL statement:
+insert into board (content,title,board_id) values (?,?,default) [42104-232]
+2025-06-18 17:51:39.946411+09:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT @[*]@character_set_database, @@sql_mode"; expected "identifier"; SQL statement:
+SELECT @@character_set_database, @@sql_mode [42001-232]
+2025-06-18 17:51:40.999410+09:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000d\000a    create table board (\000d\000a        board_id bigint not null auto_increment,\000d\000a        content varchar(255) not null,\000d\000a        title varchar(255) not null,\000d\000a        primary key (board_id)\000d\000a    ) engine[*]=InnoDB"; expected "identifier"; SQL statement:
+
+    create table board (
+        board_id bigint not null auto_increment,
+        content varchar(255) not null,
+        title varchar(255) not null,
+        primary key (board_id)
+    ) engine=InnoDB [42001-232]
