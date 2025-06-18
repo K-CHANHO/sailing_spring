@@ -6,12 +6,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
+import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
 import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +38,7 @@ public class BoardServiceTest {
     @DisplayName("제목, 내용이 NULL인 경우 게시글 등록 실패")
     public void BoardSaveFailByNull(){
         // given
-        Board board = Board.builder()
+        BoardSaveRequest board = BoardSaveRequest.builder()
                 .title(null)
                 .content(null)
                 .build();
@@ -53,10 +56,15 @@ public class BoardServiceTest {
                 .title("테스트 게시글입니당")
                 .content("초록 체크가 나왔으면 좋겠당")
                 .build();
-        lenient().doReturn(savedBoard()).when(boardRepository).save(board);
+        lenient().doReturn(savedBoard()).when(boardRepository).save(any());
+
+        BoardSaveRequest boardSaveRequest= BoardSaveRequest.builder()
+                .title("테스트 게시글입니당")
+                .content("초록 체크가 나왔으면 좋겠당")
+                .build();
 
         // when
-        Board result = boardService.save(board);
+        BoardSaveResponse result = boardService.save(boardSaveRequest);
 
         // then
         assertThat(result.getBoardId()).isNotNull();
@@ -74,8 +82,13 @@ public class BoardServiceTest {
                 .build();
         lenient().doThrow(BoardException.class).when(boardRepository).save(board);
 
+        BoardSaveRequest boardSaveRequest= BoardSaveRequest.builder()
+                .title(null)
+                .content("초록 체크가 나왔으면 좋겠당")
+                .build();
+
         // when, then
-        assertThatThrownBy(() -> boardService.save(board)).isInstanceOf(BoardException.class);
+        assertThatThrownBy(() -> boardService.save(boardSaveRequest)).isInstanceOf(BoardException.class);
 
     }
 
@@ -83,7 +96,7 @@ public class BoardServiceTest {
     @DisplayName("내용이 NULL인 경우 게시글 등록 실패")
     public void BoardSaveFailByContentNull(){
         // given
-        Board board = Board.builder()
+        BoardSaveRequest board = BoardSaveRequest.builder()
                 .title("테스트 게시글입니당")
                 .content(null)
                 .build();
