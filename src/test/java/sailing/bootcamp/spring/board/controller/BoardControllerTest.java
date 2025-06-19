@@ -14,14 +14,19 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
 import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
-import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.service.BoardService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardControllerTest {
@@ -64,15 +69,15 @@ public class BoardControllerTest {
         );
 
         // then
-        resultActions.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("게시물 등록 성공")
-    public void boardSave() throws Exception {
+    public void saveBoard() throws Exception {
         // given
         final String url = "/api/v1/board";
-        lenient().doReturn(savedBoard()).when(boardService).save(any());
+        lenient().doReturn(makeBoard()).when(boardService).save(any());
 
         // when
         final ResultActions resultActions = mockMvc.perform(
@@ -82,10 +87,39 @@ public class BoardControllerTest {
         );
 
         // then
-        resultActions.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.boardId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("테스트 게시글입니당"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content").value("초록 체크가 나왔으면 좋겠당"));
+        resultActions.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.boardId").value(1))
+                .andExpect(jsonPath("$.title").value("테스트 게시글입니당"))
+                .andExpect(jsonPath("$.content").value("초록 체크가 나왔으면 좋겠당"));
+    }
+
+    @Test
+    @DisplayName("전체 게시글 조회")
+    public void getAllBoard() throws Exception {
+        // given
+        final String url = "/api/v1/board";
+        doReturn(makeBoardList()).when(boardService).getAllBoard();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    private List<BoardDto> makeBoardList() {
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        for(int i=0; i<3; i++){
+            boardDtoList.add(BoardDto.builder()
+                    .boardId(Long.valueOf(i))
+                    .title("게시물 " + i)
+                    .content(i+" 번째 내용")
+                    .build());
+        }
+        return boardDtoList;
     }
 
     private BoardSaveRequest boardSaveRequest(String title, String content) {
@@ -95,7 +129,7 @@ public class BoardControllerTest {
                 .build();
     }
 
-    private BoardSaveResponse savedBoard() {
+    private BoardSaveResponse makeBoard() {
         return BoardSaveResponse.builder()
                 .boardId(1L)
                 .title("테스트 게시글입니당")
