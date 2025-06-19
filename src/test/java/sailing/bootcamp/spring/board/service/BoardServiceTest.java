@@ -6,16 +6,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
 import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
 import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardServiceTest {
@@ -103,6 +107,30 @@ public class BoardServiceTest {
 
         // when, then
         assertThatThrownBy(() -> boardService.save(board)).isInstanceOf(BoardException.class);
+
+    }
+
+    @Test
+    @DisplayName("게시글 전체 조회")
+    public void getAllBoards(){
+        // given
+        doReturn(makeBoardList()).when(boardRepository).findAll();
+
+        // when
+        List<BoardDto> boardDtoList = boardService.getAllBoard();
+
+        // then
+        assertThat(boardDtoList).isNotNull();
+        assertThat(boardDtoList.size()).isEqualTo(3);
+    }
+
+    private List<Board> makeBoardList() {
+        List<Board> boardList = new ArrayList<Board>();
+        for(int i=0; i<3; i++){
+            boardList.add(Board.builder().title("test" + i).content(i + "번 게시글 내용입니당").build());
+        }
+
+        return boardList;
 
     }
 
