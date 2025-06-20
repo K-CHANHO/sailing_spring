@@ -48,7 +48,7 @@ public class BoardServiceTest {
                 .build();
 
         // when, then
-        assertThatThrownBy(() -> boardService.save(board)).isInstanceOf(BoardException.class);
+        assertThatThrownBy(() -> boardService.saveBoard(board)).isInstanceOf(BoardException.class);
 
     }
 
@@ -68,7 +68,7 @@ public class BoardServiceTest {
                 .build();
 
         // when
-        BoardSaveResponse result = boardService.save(boardSaveRequest);
+        BoardSaveResponse result = boardService.saveBoard(boardSaveRequest);
 
         // then
         assertThat(result.getBoardId()).isNotNull();
@@ -92,7 +92,7 @@ public class BoardServiceTest {
                 .build();
 
         // when, then
-        assertThatThrownBy(() -> boardService.save(boardSaveRequest)).isInstanceOf(BoardException.class);
+        assertThatThrownBy(() -> boardService.saveBoard(boardSaveRequest)).isInstanceOf(BoardException.class);
 
     }
 
@@ -106,7 +106,7 @@ public class BoardServiceTest {
                 .build();
 
         // when, then
-        assertThatThrownBy(() -> boardService.save(board)).isInstanceOf(BoardException.class);
+        assertThatThrownBy(() -> boardService.saveBoard(board)).isInstanceOf(BoardException.class);
 
     }
 

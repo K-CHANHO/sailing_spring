@@ -9,7 +9,6 @@ import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public BoardSaveResponse save(BoardSaveRequest boardDto) {
+    public BoardSaveResponse saveBoard(BoardSaveRequest boardDto) {
 
         if(boardDto.getTitle() == null || boardDto.getContent() == null) {
                 throw new BoardException();

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
 import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
-import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.service.BoardService;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class BoardController {
     @PostMapping("/api/v1/board")
     public ResponseEntity<BoardSaveResponse> saveBoard(@Valid @RequestBody BoardSaveRequest boardSaveRequest) {
 
-        BoardSaveResponse savedBoard = boardService.save(boardSaveRequest);
+        BoardSaveResponse savedBoard = boardService.saveBoard(boardSaveRequest);
 
         return new ResponseEntity<>(savedBoard, HttpStatus.CREATED);
     }

@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
@@ -77,7 +76,7 @@ public class BoardControllerTest {
     public void saveBoard() throws Exception {
         // given
         final String url = "/api/v1/board";
-        lenient().doReturn(makeBoard()).when(boardService).save(any());
+        lenient().doReturn(makeBoard()).when(boardService).saveBoard(any());
 
         // when
         final ResultActions resultActions = mockMvc.perform(
