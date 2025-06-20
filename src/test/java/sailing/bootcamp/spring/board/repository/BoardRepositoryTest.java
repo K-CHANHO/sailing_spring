@@ -79,4 +79,22 @@ public class BoardRepositoryTest {
         assertThat(boardRepository.findAll().size()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("게시글 수정 테스트")
+    public void updateBoard(){
+        // given
+        Board board = Board.builder().title("수정전 제목").content("수정전 내용").build();
+        Board savedBoard = boardRepository.save(board);
+
+        // when
+        Board updateBoard = Board.builder()
+                .boardId(savedBoard.getBoardId()).title("수정후 제목").content("수정후 내용").build();
+        Board updatedBoard = boardRepository.save(updateBoard);
+
+        // then
+        assertThat(updatedBoard.getBoardId()).isEqualTo(savedBoard.getBoardId());
+        assertThat(updatedBoard.getTitle()).isEqualTo("수정후 제목");
+        assertThat(updatedBoard.getContent()).isEqualTo("수정후 내용");
+    }
+
 }
