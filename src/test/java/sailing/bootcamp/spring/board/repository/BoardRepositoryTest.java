@@ -97,4 +97,19 @@ public class BoardRepositoryTest {
         assertThat(updatedBoard.getContent()).isEqualTo("수정후 내용");
     }
 
+    @Test
+    @DisplayName("게시물 삭제 테스트")
+    public void deleteBoard(){
+        // given
+        Board board = Board.builder().title("테스트 게시글").content("테스트 내용").build();
+        Board savedBoard = boardRepository.save(board);
+
+        // when
+        boardRepository.deleteById(savedBoard.getBoardId());
+
+        // then
+        assertThat(boardRepository.findById(savedBoard.getBoardId()).isEmpty()).isTrue();
+
+    }
+
 }
