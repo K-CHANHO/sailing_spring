@@ -13,9 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import sailing.bootcamp.spring.board.dto.BoardDto;
-import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
-import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
+import sailing.bootcamp.spring.board.dto.*;
 import sailing.bootcamp.spring.board.service.BoardService;
 
 import java.util.ArrayList;
@@ -25,7 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardControllerTest {
@@ -107,6 +106,29 @@ public class BoardControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 테스트")
+    public void deleteBoard() throws Exception {
+        // given
+        final String url = "/api/v1/board";
+        doReturn(new BoardDeleteResponse(true)).when(boardService).deleteBoard(any());
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete(url)
+                        .content(gson.toJson(boardDeleteRequest(1L)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(true));
+    }
+
+    private BoardDeleteRequest boardDeleteRequest(Long boardId) {
+        return BoardDeleteRequest.builder().boardId(boardId).build();
     }
 
     private List<BoardDto> makeBoardList() {
