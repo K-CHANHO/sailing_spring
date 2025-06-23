@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sailing.bootcamp.spring.board.dto.BoardDeleteRequest;
 import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
 import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
@@ -15,6 +16,7 @@ import sailing.bootcamp.spring.exception.BoardException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,10 +58,6 @@ public class BoardServiceTest {
     @DisplayName("게시글 등록 성공")
     public void BoardSave(){
         // given
-        Board board = Board.builder()
-                .title("테스트 게시글입니당")
-                .content("초록 체크가 나왔으면 좋겠당")
-                .build();
         lenient().doReturn(savedBoard()).when(boardRepository).save(any());
 
         BoardSaveRequest boardSaveRequest= BoardSaveRequest.builder()
@@ -132,6 +130,25 @@ public class BoardServiceTest {
 
         return boardList;
 
+    }
+
+    @Test
+    @DisplayName("게시물 삭제 테스트")
+    public void deleteBoard(){
+        // given
+        lenient().doReturn(savedBoard()).when(boardRepository).save(any());
+        BoardSaveRequest boardSaveRequest= BoardSaveRequest.builder()
+                .title("테스트 게시글입니당")
+                .content("초록 체크가 나왔으면 좋겠당")
+                .build();
+        BoardSaveResponse savedBoard = boardService.saveBoard(boardSaveRequest);
+
+        BoardDeleteRequest boardDeleteRequest = BoardDeleteRequest.builder()
+                .boardId(savedBoard.getBoardId())
+                .build();
+
+        // when, then
+        assertThat(boardService.deleteBoard(boardDeleteRequest)).isTrue();
     }
 
 }
