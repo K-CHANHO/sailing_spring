@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import sailing.bootcamp.spring.board.dto.BoardDto;
 import sailing.bootcamp.spring.board.entity.Board;
 
 import java.util.ArrayList;
@@ -110,6 +111,23 @@ public class BoardRepositoryTest {
         // then
         assertThat(boardRepository.findById(savedBoard.getBoardId()).isEmpty()).isTrue();
 
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트")
+    public void getBoard(){
+        // given
+        Board board = Board.builder()
+                .title("테스트지롱").content("내용이지롱").build();
+
+        // when
+        Board savedBoard = boardRepository.save(board);
+        BoardDto boardDto = BoardDto.toDto(savedBoard);
+
+        // then
+        assertThat(boardDto.getBoardId()).isNotNull();
+        assertThat(boardDto.getTitle()).isEqualTo("테스트지롱");
+        assertThat(boardDto.getContent()).isEqualTo("내용이지롱");
     }
 
 }
