@@ -2,9 +2,7 @@ package sailing.bootcamp.spring.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sailing.bootcamp.spring.board.dto.BoardDto;
-import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
-import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
+import sailing.bootcamp.spring.board.dto.*;
 import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
@@ -38,5 +36,15 @@ public class BoardService {
                 .collect(Collectors.toList());
 
         return boardDtoList;
+    }
+
+    public BoardDeleteResponse deleteBoard(BoardDeleteRequest boardDeleteRequest) {
+        boolean status = true;
+        try {
+            boardRepository.deleteById(boardDeleteRequest.getBoardId());
+            return new BoardDeleteResponse(true);
+        } catch (Exception e){
+            return new BoardDeleteResponse(false);
+        }
     }
 }
