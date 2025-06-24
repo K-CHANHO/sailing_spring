@@ -8,7 +8,6 @@ import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +19,7 @@ public class BoardService {
     public BoardSaveResponse saveBoard(BoardSaveRequest boardDto) {
 
         if(boardDto.getTitle() == null || boardDto.getContent() == null) {
-                throw new BoardException();
+                throw new BoardException("제목 또는 내용을 입력해주세요");
         }
 
         Board board = BoardSaveRequest.toEntity(boardDto);
