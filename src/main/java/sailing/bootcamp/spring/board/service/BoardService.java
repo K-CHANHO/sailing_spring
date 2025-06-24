@@ -2,6 +2,7 @@ package sailing.bootcamp.spring.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sailing.bootcamp.spring.board.dto.*;
 import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
@@ -52,5 +53,13 @@ public class BoardService {
         Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new BoardException("존재하지 않는 게시글입니다."));
 
         return BoardGetResponse.toDto(findBoard);
+    }
+
+    public BoardUpdateResponse updateBoard(BoardUpdateRequest boardUpdateRequest) {
+
+        Board board = BoardUpdateRequest.toEntity(boardUpdateRequest);
+        Board updatedBoard = boardRepository.save(board);
+
+        return BoardUpdateResponse.toDto(updatedBoard);
     }
 }

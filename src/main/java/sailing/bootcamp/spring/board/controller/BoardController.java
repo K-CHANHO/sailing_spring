@@ -47,4 +47,11 @@ public class BoardController {
 
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
+
+    @PutMapping("/api/v1/board")
+    public ResponseEntity<BoardUpdateResponse> updateBoard(@RequestBody BoardUpdateRequest boardUpdateRequest){
+        BoardUpdateResponse boardUpdateResponse = boardService.updateBoard(boardUpdateRequest);
+        return new ResponseEntity<>(boardUpdateResponse, HttpStatus.OK);
+    }
+
 }
