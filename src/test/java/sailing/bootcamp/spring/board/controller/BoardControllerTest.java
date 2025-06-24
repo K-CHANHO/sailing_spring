@@ -127,6 +127,40 @@ public class BoardControllerTest {
                 .andExpect(jsonPath("$.status").value(true));
     }
 
+    @Test
+    @DisplayName("게시글 수정 테스트")
+    public void updateBoard() throws Exception {
+        // given
+        final String url = "/api/v1/board";
+        BoardUpdateResponse boardUpdateResponse = BoardUpdateResponse.builder()
+                .boardId(1L)
+                .title("수정 후 제목이지롱")
+                .content("수정 후 내용이지롱")
+                .build();
+        lenient().doReturn(boardUpdateResponse).when(boardService).updateBoard(any());
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put(url)
+                        .content(gson.toJson(boardUpdateRequest()))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.boardId").isNotEmpty())
+                .andExpect(jsonPath("$.title").value("수정 후 제목이지롱"))
+                .andExpect(jsonPath("$.content").value("수정 후 내용이지롱"));
+    }
+
+    private BoardUpdateRequest boardUpdateRequest() {
+        return BoardUpdateRequest.builder()
+                .boardId(1L)
+                .title("수정 후 제목이지롱")
+                .content("수정 후 내용이지롱")
+                .build();
+    }
+
     private BoardDeleteRequest boardDeleteRequest(Long boardId) {
         return BoardDeleteRequest.builder().boardId(boardId).build();
     }
