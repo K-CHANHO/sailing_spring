@@ -50,7 +50,7 @@ public class BoardService {
     }
 
     public BoardGetResponse getBoard(Long boardId) {
-        Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글이 없습니다."));
+        Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new BoardException("존재하지 않는 게시글입니다."));
 
         return BoardGetResponse.toDto(findBoard);
     }
