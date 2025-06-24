@@ -8,6 +8,7 @@ import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,14 +29,14 @@ public class BoardService {
         return BoardSaveResponse.toDto(savedBoard);
     }
 
-    public List<BoardDto> getAllBoard() {
+    public List<BoardGetResponse> getAllBoard() {
 
         List<Board> boardList = boardRepository.findAll();
-        List<BoardDto> boardDtoList = boardList.stream()
-                .map(board -> BoardDto.toDto(board))
+        List<BoardGetResponse> boardGetResponseList = boardList.stream()
+                .map(board -> BoardGetResponse.toDto(board))
                 .collect(Collectors.toList());
 
-        return boardDtoList;
+        return boardGetResponseList;
     }
 
     public BoardDeleteResponse deleteBoard(BoardDeleteRequest boardDeleteRequest) {
@@ -46,5 +47,11 @@ public class BoardService {
         } catch (Exception e){
             return new BoardDeleteResponse(false);
         }
+    }
+
+    public BoardGetResponse getBoard(Long boardId) {
+        Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글이 없습니다."));
+
+        return BoardGetResponse.toDto(findBoard);
     }
 }

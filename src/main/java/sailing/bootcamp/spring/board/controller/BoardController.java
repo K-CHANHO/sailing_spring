@@ -25,8 +25,8 @@ public class BoardController {
     }
 
     @GetMapping("/api/v1/board")
-    public ResponseEntity<List<BoardDto>> getAllBoard(){
-        List<BoardDto> boardList = boardService.getAllBoard();
+    public ResponseEntity<List<BoardGetResponse>> getAllBoard(){
+        List<BoardGetResponse> boardList = boardService.getAllBoard();
 
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
@@ -39,5 +39,12 @@ public class BoardController {
             return new ResponseEntity<>(boardDeleteResponse, HttpStatus.OK);
         else
             return new ResponseEntity<>(boardDeleteResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/api/v1/board/{boardId}")
+    public ResponseEntity<BoardGetResponse> getBoard(@PathVariable Long boardId){
+        BoardGetResponse board = boardService.getBoard(boardId);
+
+        return new ResponseEntity<>(board, HttpStatus.OK);
     }
 }
