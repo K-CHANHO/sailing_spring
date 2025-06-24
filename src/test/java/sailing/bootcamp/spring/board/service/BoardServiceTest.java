@@ -6,10 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sailing.bootcamp.spring.board.dto.BoardDeleteRequest;
-import sailing.bootcamp.spring.board.dto.BoardGetResponse;
-import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
-import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
+import sailing.bootcamp.spring.board.dto.*;
 import sailing.bootcamp.spring.board.entity.Board;
 import sailing.bootcamp.spring.board.repository.BoardRepository;
 import sailing.bootcamp.spring.exception.BoardException;
@@ -165,6 +162,34 @@ public class BoardServiceTest {
         assertThat(boardDto.getBoardId()).isNotNull();
         assertThat(boardDto.getTitle()).isEqualTo("테스트 게시글입니당");
         assertThat(boardDto.getContent()).isEqualTo("초록 체크가 나왔으면 좋겠당");
+
+    }
+
+    @Test
+    @DisplayName("게시글 수정 테스트")
+    public void updateBoard(){
+        // given
+        BoardUpdateRequest boardUpdateRequest = BoardUpdateRequest.builder()
+                .boardId(1L)
+                .title("수정 후 제목이지롱")
+                .content("수정 후 내용이지롱")
+                .build();
+
+        Board board = Board.builder()
+                .boardId(1L)
+                .title("수정 후 제목이지롱")
+                .content("수정 후 내용이지롱")
+                .build();
+
+        lenient().doReturn(board).when(boardRepository).save(any());
+
+        // when
+        BoardUpdateResponse boardUpdateResponse = boardService.updateBoard(boardUpdateRequest);
+
+        // then
+        assertThat(boardUpdateResponse.getBoardId()).isNotNull();
+        assertThat(boardUpdateResponse.getTitle()).isEqualTo("수정 후 제목이지롱");
+        assertThat(boardUpdateResponse.getContent()).isEqualTo("수정 후 내용이지롱");
 
     }
 
