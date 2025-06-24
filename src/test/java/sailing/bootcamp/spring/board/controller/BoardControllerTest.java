@@ -131,16 +131,16 @@ public class BoardControllerTest {
         return BoardDeleteRequest.builder().boardId(boardId).build();
     }
 
-    private List<BoardDto> makeBoardList() {
-        List<BoardDto> boardDtoList = new ArrayList<>();
+    private List<BoardGetResponse> makeBoardList() {
+        List<BoardGetResponse> boardGetResponseList = new ArrayList<>();
         for(int i=0; i<3; i++){
-            boardDtoList.add(BoardDto.builder()
+            boardGetResponseList.add(BoardGetResponse.builder()
                     .boardId(Long.valueOf(i))
                     .title("게시물 " + i)
                     .content(i+" 번째 내용")
                     .build());
         }
-        return boardDtoList;
+        return boardGetResponseList;
     }
 
     private BoardSaveRequest boardSaveRequest(String title, String content) {

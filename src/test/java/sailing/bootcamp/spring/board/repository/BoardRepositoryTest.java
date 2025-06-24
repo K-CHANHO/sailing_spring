@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import sailing.bootcamp.spring.board.dto.BoardDto;
+import sailing.bootcamp.spring.board.dto.BoardGetResponse;
 import sailing.bootcamp.spring.board.entity.Board;
 
 import java.util.ArrayList;
@@ -122,12 +122,12 @@ public class BoardRepositoryTest {
 
         // when
         Board savedBoard = boardRepository.save(board);
-        BoardDto boardDto = BoardDto.toDto(savedBoard);
+        BoardGetResponse boardGetResponse = BoardGetResponse.toDto(savedBoard);
 
         // then
-        assertThat(boardDto.getBoardId()).isNotNull();
-        assertThat(boardDto.getTitle()).isEqualTo("테스트지롱");
-        assertThat(boardDto.getContent()).isEqualTo("내용이지롱");
+        assertThat(boardGetResponse.getBoardId()).isNotNull();
+        assertThat(boardGetResponse.getTitle()).isEqualTo("테스트지롱");
+        assertThat(boardGetResponse.getContent()).isEqualTo("내용이지롱");
     }
 
 }

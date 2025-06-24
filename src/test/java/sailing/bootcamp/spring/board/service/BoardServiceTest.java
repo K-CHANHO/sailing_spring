@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sailing.bootcamp.spring.board.dto.BoardDeleteRequest;
-import sailing.bootcamp.spring.board.dto.BoardDto;
+import sailing.bootcamp.spring.board.dto.BoardGetResponse;
 import sailing.bootcamp.spring.board.dto.BoardSaveRequest;
 import sailing.bootcamp.spring.board.dto.BoardSaveResponse;
 import sailing.bootcamp.spring.board.entity.Board;
@@ -16,6 +16,7 @@ import sailing.bootcamp.spring.exception.BoardException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -115,11 +116,11 @@ public class BoardServiceTest {
         doReturn(makeBoardList()).when(boardRepository).findAll();
 
         // when
-        List<BoardDto> boardDtoList = boardService.getAllBoard();
+        List<BoardGetResponse> boardGetResponseList = boardService.getAllBoard();
 
         // then
-        assertThat(boardDtoList).isNotNull();
-        assertThat(boardDtoList.size()).isEqualTo(3);
+        assertThat(boardGetResponseList).isNotNull();
+        assertThat(boardGetResponseList.size()).isEqualTo(3);
     }
 
     private List<Board> makeBoardList() {
@@ -149,6 +150,22 @@ public class BoardServiceTest {
 
         // when, then
         assertThat(boardService.deleteBoard(boardDeleteRequest).isStatus()).isTrue();
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트")
+    public void getBoard(){
+        // given
+        doReturn(Optional.of(savedBoard())).when(boardRepository).findById(any());
+
+        // when
+        BoardGetResponse boardDto = boardService.getBoard(1L);
+
+        // then
+        assertThat(boardDto.getBoardId()).isNotNull();
+        assertThat(boardDto.getTitle()).isEqualTo("테스트 게시글입니당");
+        assertThat(boardDto.getContent()).isEqualTo("초록 체크가 나왔으면 좋겠당");
+
     }
 
 }
