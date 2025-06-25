@@ -141,12 +141,8 @@ public class BoardServiceTest {
                 .build();
         BoardSaveResponse savedBoard = boardService.saveBoard(boardSaveRequest);
 
-        BoardDeleteRequest boardDeleteRequest = BoardDeleteRequest.builder()
-                .boardId(savedBoard.getBoardId())
-                .build();
-
         // when, then
-        assertThat(boardService.deleteBoard(boardDeleteRequest).isStatus()).isTrue();
+        assertThat(boardService.deleteBoard(savedBoard.getBoardId()).isStatus()).isTrue();
     }
 
     @Test
