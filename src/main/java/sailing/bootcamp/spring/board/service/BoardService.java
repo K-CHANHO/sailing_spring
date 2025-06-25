@@ -39,10 +39,10 @@ public class BoardService {
         return boardGetResponseList;
     }
 
-    public BoardDeleteResponse deleteBoard(BoardDeleteRequest boardDeleteRequest) {
+    public BoardDeleteResponse deleteBoard(Long boardId) {
         boolean status = true;
         try {
-            boardRepository.deleteById(boardDeleteRequest.getBoardId());
+            boardRepository.deleteById(boardId);
             return new BoardDeleteResponse(true);
         } catch (Exception e){
             return new BoardDeleteResponse(false);
