@@ -35,6 +35,8 @@ public class BoardServiceTest {
                 .boardId(1L)
                 .title("테스트 게시글입니당")
                 .content("초록 체크가 나왔으면 좋겠당")
+                .userName("김찬호")
+                .password("password")
                 .build();
     }
 
@@ -140,9 +142,13 @@ public class BoardServiceTest {
                 .content("초록 체크가 나왔으면 좋겠당")
                 .build();
         BoardSaveResponse savedBoard = boardService.saveBoard(boardSaveRequest);
+        BoardDeleteRequest deleteRequest = BoardDeleteRequest.builder()
+                .boardId(savedBoard.getBoardId())
+                .password("password")
+                .build();
 
         // when, then
-        assertThat(boardService.deleteBoard(savedBoard.getBoardId()).isStatus()).isTrue();
+        assertThat(boardService.deleteBoard(deleteRequest).isStatus()).isTrue();
     }
 
     @Test

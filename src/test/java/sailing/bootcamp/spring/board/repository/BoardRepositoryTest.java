@@ -97,7 +97,7 @@ public class BoardRepositoryTest {
 
         // when
         Board updateBoard = Board.builder()
-                .boardId(savedBoard.getBoardId()).title("수정후 제목").content("수정후 내용").userName("김찬호").password("password").build();
+                .boardId(savedBoard.getBoardId()).title("수정후 제목").content("수정후 내용").build();
         Board updatedBoard = boardRepository.save(updateBoard);
 
         // then
@@ -110,7 +110,7 @@ public class BoardRepositoryTest {
     @DisplayName("게시물 삭제 테스트")
     public void deleteBoard(){
         // given
-        Board board = Board.builder().title("테스트 게시글").content("테스트 내용").userName("김찬호").password("password").build();
+        Board board = Board.builder().title("테스트 게시글").content("테스트 내용").build();
         Board savedBoard = boardRepository.save(board);
 
         // when
@@ -126,7 +126,7 @@ public class BoardRepositoryTest {
     public void getBoard(){
         // given
         Board board = Board.builder()
-                .title("테스트지롱").content("내용이지롱").userName("김찬호").password("password").build();
+                .title("테스트지롱").content("내용이지롱").build();
 
         // when
         Board savedBoard = boardRepository.save(board);
