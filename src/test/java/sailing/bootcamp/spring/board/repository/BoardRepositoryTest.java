@@ -33,21 +33,29 @@ public class BoardRepositoryTest {
         Board boardWithNull = Board.builder()
                 .title(null)
                 .content(null)
+                .userName("김찬호")
+                .password("password")
                 .build(); // 제목, 내용이 둘 다 null 인 경우
 
         Board boardWithTitleNull = Board.builder()
                 .title(null)
                 .content("초록색 체크를 원합니당")
+                .userName("김찬호")
+                .password("password")
                 .build(); // 제목이 null 인 경우
 
         Board boardWithContentNull = Board.builder()
                 .title("게시글 제목입니당")
                 .content(null)
+                .userName("김찬호")
+                .password("password")
                 .build(); // 내용이 null 인 경우
 
         Board boardWithoutNull = Board.builder()
                 .title("게시글 제목입니당")
                 .content("초록색 체크를 원합니당")
+                .userName("김찬호")
+                .password("password")
                 .build(); // 제목, 내용 둘 다 null이 아닌 경우
 
         // when
@@ -68,9 +76,9 @@ public class BoardRepositoryTest {
     public void getAllBoard(){
         // given
         ArrayList<Board> boardList = new ArrayList<>();
-        Board testBoard1 = Board.builder().title("test1").content("테스트1").build();
-        Board testBoard2 = Board.builder().title("test2").content("테스트2").build();
-        Board testBoard3 = Board.builder().title("test3").content("테스트3").build();
+        Board testBoard1 = Board.builder().title("test1").content("테스트1").userName("김찬호").password("password").build();
+        Board testBoard2 = Board.builder().title("test2").content("테스트2").userName("김찬호").password("password").build();
+        Board testBoard3 = Board.builder().title("test3").content("테스트3").userName("김찬호").password("password").build();
 
         // when
         boardList.add(testBoard1); boardList.add(testBoard2); boardList.add(testBoard3);
@@ -84,12 +92,12 @@ public class BoardRepositoryTest {
     @DisplayName("게시글 수정 테스트")
     public void updateBoard(){
         // given
-        Board board = Board.builder().title("수정전 제목").content("수정전 내용").build();
+        Board board = Board.builder().title("수정전 제목").content("수정전 내용").userName("김찬호").password("password").build();
         Board savedBoard = boardRepository.save(board);
 
         // when
         Board updateBoard = Board.builder()
-                .boardId(savedBoard.getBoardId()).title("수정후 제목").content("수정후 내용").build();
+                .boardId(savedBoard.getBoardId()).title("수정후 제목").content("수정후 내용").userName("김찬호").password("password").build();
         Board updatedBoard = boardRepository.save(updateBoard);
 
         // then
@@ -102,7 +110,7 @@ public class BoardRepositoryTest {
     @DisplayName("게시물 삭제 테스트")
     public void deleteBoard(){
         // given
-        Board board = Board.builder().title("테스트 게시글").content("테스트 내용").build();
+        Board board = Board.builder().title("테스트 게시글").content("테스트 내용").userName("김찬호").password("password").build();
         Board savedBoard = boardRepository.save(board);
 
         // when
@@ -118,7 +126,7 @@ public class BoardRepositoryTest {
     public void getBoard(){
         // given
         Board board = Board.builder()
-                .title("테스트지롱").content("내용이지롱").build();
+                .title("테스트지롱").content("내용이지롱").userName("김찬호").password("password").build();
 
         // when
         Board savedBoard = boardRepository.save(board);
