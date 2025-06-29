@@ -11,13 +11,7 @@ public class BoardUpdateRequest {
     private Long boardId;
     private String title;
     private String content;
-
-    public static Board toEntity(BoardUpdateRequest boardUpdateRequest) {
-        return Board.builder()
-                .boardId(boardUpdateRequest.getBoardId())
-                .title(boardUpdateRequest.getTitle())
-                .content(boardUpdateRequest.getContent())
-                .build();
-    }
+    private String userName;
+    private String password;
 
 }

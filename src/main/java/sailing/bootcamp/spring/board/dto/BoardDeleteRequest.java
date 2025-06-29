@@ -8,5 +8,6 @@ import lombok.Data;
 public class BoardDeleteRequest {
 
     private Long boardId;
+    private String password;
 
 }

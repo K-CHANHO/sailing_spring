@@ -39,14 +39,20 @@ public class BoardService {
         return boardGetResponseList;
     }
 
-    public BoardDeleteResponse deleteBoard(Long boardId) {
-        boolean status = true;
-        try {
-            boardRepository.deleteById(boardId);
-            return new BoardDeleteResponse(true);
-        } catch (Exception e){
-            return new BoardDeleteResponse(false);
-        }
+    public BoardDeleteResponse deleteBoard(BoardDeleteRequest boardDeleteRequest) {
+
+        Board board = boardRepository.findById(boardDeleteRequest.getBoardId())
+                .orElseThrow(() -> new BoardException("존재하지 않는 게시글입니다"));
+
+        if (board.getPassword().equals(boardDeleteRequest.getPassword())) {
+            boolean status = true;
+            try {
+                boardRepository.deleteById(boardDeleteRequest.getBoardId());
+                return new BoardDeleteResponse(true);
+            } catch (Exception e) {
+                return new BoardDeleteResponse(false);
+            }
+        } else throw new BoardException("비밀번호가 일치하지 않습니다");
     }
 
     public BoardGetResponse getBoard(Long boardId) {
@@ -57,9 +63,19 @@ public class BoardService {
 
     public BoardUpdateResponse updateBoard(BoardUpdateRequest boardUpdateRequest) {
 
-        Board board = BoardUpdateRequest.toEntity(boardUpdateRequest);
-        Board updatedBoard = boardRepository.save(board);
+        Board beforeBoard = boardRepository.findById(boardUpdateRequest.getBoardId())
+                .orElseThrow(()-> new BoardException("존재하지 않는 게시글입니다"));
 
-        return BoardUpdateResponse.toDto(updatedBoard);
+        if(beforeBoard.getPassword().equals(boardUpdateRequest.getPassword())){
+            Board board = beforeBoard.toBuilder()
+                    .title(boardUpdateRequest.getTitle())
+                    .content(boardUpdateRequest.getContent())
+                    .userName(boardUpdateRequest.getUserName())
+                    .build();
+            Board updatedBoard = boardRepository.save(board);
+            return BoardUpdateResponse.toDto(updatedBoard);
+        } else throw new BoardException("비밀번호가 일치하지 않습니다!");
+
+
     }
 }
