@@ -1,6 +1,7 @@
 package sailing.bootcamp.spring.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sailing.bootcamp.spring.board.dto.*;
@@ -22,6 +23,9 @@ public class BoardService {
         if(boardDto.getTitle() == null || boardDto.getContent() == null) {
                 throw new BoardException("제목 또는 내용을 입력해주세요");
         }
+
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        boardDto.setUserName(userName);
 
         Board board = BoardSaveRequest.toEntity(boardDto);
         Board savedBoard = boardRepository.save(board);

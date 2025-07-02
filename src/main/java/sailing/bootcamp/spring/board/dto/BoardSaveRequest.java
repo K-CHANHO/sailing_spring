@@ -3,8 +3,6 @@ package sailing.bootcamp.spring.board.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import sailing.bootcamp.spring.board.entity.Board;
 
 import java.time.LocalDateTime;
@@ -19,7 +17,6 @@ public class BoardSaveRequest {
     @NotNull
     private String content;
 
-    @NotNull
     private String userName;
 
     @NotNull
