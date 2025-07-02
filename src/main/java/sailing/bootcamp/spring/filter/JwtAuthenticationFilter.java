@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sailing.bootcamp.spring.custom.ModifiableHttpServletRequest;
 import sailing.bootcamp.spring.user.service.JwtService;
 import sailing.bootcamp.spring.user.service.UserDetailsServiceImpl;
 
