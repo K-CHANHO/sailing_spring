@@ -19,7 +19,7 @@ public class LoginService {
 
         String token = "";
         if(user.getPassword().equals(loginRequest.getPassword())){
-            token = jwtService.createToken(user.getUsername());
+            token = jwtService.createToken(user);
         } else {
             throw new LoginException("비밀번호가 일치하지 않습니다.");
         }

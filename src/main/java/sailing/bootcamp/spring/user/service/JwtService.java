@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import sailing.bootcamp.spring.user.entity.User;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
@@ -40,12 +41,12 @@ public class JwtService {
     }
 
     // 토큰 생성
-    public String createToken(String username) {
+    public String createToken(User user) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .subject(username)
+                        .subject(user.getUsername())
                         .expiration(new Date(date.getTime() + TOKEN_TIME))
                         .issuedAt(date)
                         .signWith(key)

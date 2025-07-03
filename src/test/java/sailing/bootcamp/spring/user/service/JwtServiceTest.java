@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import sailing.bootcamp.spring.user.entity.Role;
+import sailing.bootcamp.spring.user.entity.User;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -20,7 +22,7 @@ class JwtServiceTest {
     @Test
     @DisplayName("토큰 발급 테스트")
     public void createToken(){
-        String token = jwtService.createToken("chanho");
+        String token = jwtService.createToken(User.builder().userId("chanho").role(Role.ADMIN).build());
 
         log.info("token : {}", token);
     }

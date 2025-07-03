@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import sailing.bootcamp.spring.user.entity.Role;
 import sailing.bootcamp.spring.user.entity.User;
 
 @Builder
@@ -21,10 +22,13 @@ public class UserSaveRequest {
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private String password;
 
+    private Role role;
+
     public User toEntity(UserSaveRequest userSaveRequest) {
         User entity = User.builder()
                 .username(userSaveRequest.getUsername())
                 .password(userSaveRequest.getPassword())
+                .role(userSaveRequest.getRole())
                 .build();
 
         return entity;

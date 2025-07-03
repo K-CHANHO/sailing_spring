@@ -3,6 +3,7 @@ package sailing.bootcamp.spring.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import sailing.bootcamp.spring.filter.JwtAuthenticationFilter;
+import sailing.bootcamp.spring.user.entity.Role;
 import sailing.bootcamp.spring.user.service.JwtService;
 import sailing.bootcamp.spring.user.service.UserDetailsServiceImpl;
 
@@ -42,7 +44,10 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         PathPatternRequestMatcher.withDefaults().matcher("/error")
                                 ).permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(
+                                        PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.DELETE, "/api/v1/board")
+                                ).hasRole(Role.ADMIN.name())
+                                .anyRequest().hasRole(Role.USER.name())
                 )
                 .headers(headersConfigurer ->
                         headersConfigurer
