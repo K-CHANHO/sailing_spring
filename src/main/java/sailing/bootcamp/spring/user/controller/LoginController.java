@@ -22,16 +22,12 @@ public class LoginController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginrequest){
 
         try {
-            String token = loginService.login(loginrequest);
+            LoginResponse loginResponse = loginService.login(loginrequest);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", token);
+            loginResponse.setStatus(200);
+            loginResponse.setMessage("로그인 성공");
 
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .status(200)
-                    .message("로그인 성공")
-                    .build();
-            return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         } catch (LoginException e){
             LoginResponse loginResponse = LoginResponse.builder()
                     .status(400)

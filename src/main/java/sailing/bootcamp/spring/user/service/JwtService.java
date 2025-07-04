@@ -26,7 +26,8 @@ public class JwtService {
     // Token 식별자
     private static final String BEARER_PREFIX = "Bearer ";
     // 토큰 만료시간
-    private static final long TOKEN_TIME = 60 * 60 * 1000L; // 1시간
+    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 1시간
+    private static final long REFRESH_TOKEN_TIME =24 * 60 * 60 * 1000L; // 24시간
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -40,14 +41,27 @@ public class JwtService {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    // 토큰 생성
-    public String createToken(User user) {
+    // Access 토큰 생성
+    public String createAccessToken(User user) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .subject(user.getUsername())
-                        .expiration(new Date(date.getTime() + TOKEN_TIME))
+                        .expiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
+                        .issuedAt(date)
+                        .signWith(key)
+                        .compact();
+    }
+
+    // Refresh 토큰 생성
+    public String createRefreshToken(User user) {
+        Date date = new Date();
+
+        return BEARER_PREFIX +
+                Jwts.builder()
+                        .subject(user.getUsername())
+                        .expiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
                         .issuedAt(date)
                         .signWith(key)
                         .compact();

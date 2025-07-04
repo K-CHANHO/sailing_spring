@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import sailing.bootcamp.spring.exception.LoginException;
 import sailing.bootcamp.spring.user.dto.LoginRequest;
+import sailing.bootcamp.spring.user.dto.LoginResponse;
 import sailing.bootcamp.spring.user.entity.User;
 import sailing.bootcamp.spring.user.repository.UserRepository;
 
@@ -70,10 +71,11 @@ public class LoginServiceTest {
         LoginRequest request = LoginRequest.builder().username("chanho").password("1234").build();
 
         // when
-        String token = loginService.login(request);
+        LoginResponse response = loginService.login(request);
 
         // then
-        assertThat(token).isNotNull();
-        log.info("token = {}", token);
+        assertThat(response).isNotNull();
+        log.info("ACCESS TOKEN = {}", response.getAccessToken());
+        log.info("REFRESH TOKEN = {}", response.getRefreshToken());
     }
 }
